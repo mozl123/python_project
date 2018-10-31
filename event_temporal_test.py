@@ -42,43 +42,4 @@ if __name__ == '__main__':
     key1 = '1048'
     key2 = '929'
     fastdtw_algorithm(d[key1], d[key2], t[key1], t[key2], key1, key2)
-
-    # """
-    # noise and outlier test
-    # 去除停止词，词性还原
-    # """
-    # path1 = ".//data//time_feature//temp//929.txt"
-    # # path2 = ".//data//time_feature//temp//1048.txt"
-    #
-    # TIME = 0
-    # NUMS = 1
-    # TEXT = 2
-    #
-    # d929_time = []
-    # d929_nums = []
-    # d929_text = []
-    # with codecs.open(filename=path1, mode='r') as f:
-    #     for line in f:
-    #         line = line.strip('\n')
-    #         line = line.split('\t')
-    #         times, nums, text = line[TIME][:-3], \
-    #                             int(line[NUMS]), line[TEXT].split(' ')
-    #         new_text = []
-    #         for word in text:
-    #             w = wn.morphy(word)
-    #             if w is None:
-    #                 new_text.append(word)
-    #             else:
-    #                 new_text.append(w)
-    #
-    #         d929_time.append(time.mktime(time.strptime(times, "%Y %m %d %H:%M")))
-    #         d929_nums.append(nums + 1)
-    #         if len(new_text) < 3:
-    #             continue
-    #         d929_text.append(new_text)
-
-    # from preprocess.tweet_tokenize.tweet_tokenize import *
-    # stem = modalVerbExtract(["attacks", "attack"])  # 所有格还原
-    # print stem
-
-
+	
