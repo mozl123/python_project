@@ -1,0 +1,10 @@
+2018 04 24 17:10:39	0	seneca college confirms that some of their students are among those killed in yesterday attack in toronto
+2018 04 24 17:36:04	1	breaking confirming one of their students was killed in the van attack yesterday toronto
+2018 04 24 18:01:05	10	breaking south korea says nationals killed in toronto van attack seneca says one student among dead more coming
+2018 04 24 18:02:57	2	update south korea says nationals killed in toronto van attack seneca says one student among dead
+2018 04 24 18:04:54	1	newsalert south korea says nationals killed in toronto van attack seneca says one student among dead
+2018 04 24 18:05:14	0	breaking south korea government says two nationals were killed in yesterday van attack in toronto seneca coll
+2018 04 24 18:08:52	0	newsalert south korea says nationals killed in toronto van attack seneca says one student among dead no jumpi
+2018 04 24 18:09:57	0	south korea says two nationals killed in toronto van attack seneca says one student among dead
+2018 04 24 18:11:47	0	breaking south korea government says two nationals were killed in yesterday van attack in toronto seneca college
+2018 04 24 18:13:26	2	news | south korea says nationals killed in toronto van attack seneca says one student among dead details here
