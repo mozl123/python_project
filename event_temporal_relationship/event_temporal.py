@@ -86,9 +86,9 @@ def fastdtw_algorithm(t1, t2, key1, key2, n1=None, n2=None):
     # 绘图，便于可视化，在y=1和y=5画线
     y1 = len(new_t1) * [1]
     y2 = len(new_t2) * [5]
-    l1 = plt.scatter(new_t1, y1, c='r', label=u"1")
-    l2 = plt.scatter(new_t2, y2, c='g', label=u"2")
-
+    l1 = plt.scatter(new_t1, y1, c='r')
+    l2 = plt.scatter(new_t2, y2, c='g')
+    plt.ylim(0, 6)
     """绘制dtw算法得到的对应关系"""
     # 构建坐标
     coordinate1 = zip(new_t1, y1)
