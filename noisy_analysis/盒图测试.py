@@ -18,3 +18,12 @@ plt.xticks([y + 1 for y in range(len(all_data))], ['x1', 'x2', 'x3'])
 plt.xlabel('measurement x')
 t = plt.title('Box plot')
 plt.show()
+
+d1 = [1, 2, 10, 11, 12, 13, 14, 17, 19, 30, 31]
+subfig2 = plt.subplot(1, 1, 1)
+subfig2.boxplot(d1, widths=.25, vert=True)
+subfig2.plot(np.full(9, 1.26), d1[:9], '+k', markeredgewidth=1)
+
+subfig2.set_title("1. from non-robust estimates\n(Maximum Likelihood)")
+plt.yticks(())
+plt.show()

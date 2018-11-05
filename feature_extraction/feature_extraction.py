@@ -21,6 +21,18 @@ def entropy_compute(d):
         mydict[item[0]] = -item[1] * math.log(item[1]) / res
     return mydict
 
+
+def loc_recognize(text_data):
+    """
+    空间实体识别
+    :param text_data:文本序列
+    :return:
+    """
+    for text in text_data:
+        pass
+
+
+
 if __name__ == '__main__':
     path1 = "..//data//time_feature//temp//710.txt"
     word_dict = {}
