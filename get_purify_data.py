@@ -12,11 +12,11 @@ NUM_PATTERN = re.compile(r"^\d+:.+")   # 匹配数字+冒号
 # 分词器
 tokenizer = TweetTokenize()
 
-# t = u'event description: RT @FoxNews: Breaking News: Waffle House shooting suspect in custody, police say https://t.co/1UZKwsCIyP'
+# t = u'event description: RT @FoxNews: Breaking News: Waffle House shooting suspect in custody, police say '
 # res = PATTERN3.findall(t)
 # print res
 # print res[0][len(u'event description: '):]
-# t = u'5:    After van attack, Toronto mayor emphasizes how ‘inclusive’ and ‘accepting’ his city is | TheBlaze https://t.co/MQkwf36sU4'
+# t = u'5:    After van attack, Toronto mayor emphasizes how ‘inclusive’ and ‘accepting’ his city is '
 # res = PATTERN4.findall(t)
 # print res
 stop_words = load_stop_words(file_find("stop_words/english.stop"))
@@ -25,7 +25,13 @@ MONTH_DICT = {'Jan': '01', "Feb": '02', "Mar": '03', "Apr": '04', "May": '05', "
               "Jul": '07', "Aug": '08', "Sep": '09', "Oct": '10', "Nov": '11', "Dec": '12'}
 
 
-def formatTweet(input_path, output_path):
+def format_tweet(input_path, output_path):
+    """
+    按照推文格式进行正则匹配
+    :param input_path:
+    :param output_path:
+    :return:
+    """
     event_dict = {}  # 事件id不唯一！
     event_id = 0
     with codecs.open(input_path, encoding="utf-8", mode="r") as f:
@@ -33,16 +39,18 @@ def formatTweet(input_path, output_path):
             line = line.strip()  # 去除边缘的空格和换行符
             if len(line) == 0:  # 无效推文
                 continue
-            res = EVENT_ID_PATTERN.findall(line)
-            res1 = DESCRIPTION_PATTERN.findall(line)
+            event_id_list = EVENT_ID_PATTERN.findall(line)
+            description_pattern_list = DESCRIPTION_PATTERN.findall(line)
 
-            if len(res) > 0 or len(res1):
-                if len(res) > 0:
-                    cur_id = re.compile("\d+").findall(res[0])
-                    event_dict[cur_id[0]] = []
-                    event_id = cur_id[0]
-                if len(res1) > 0:
-                    desc = res1[0][len(u'event description: '):]
+            if len(event_id_list) > 0 or len(description_pattern_list):   # 匹配到了一个新的事件
+                if len(event_id_list) > 0:
+                    cur_id = re.compile("\d+").findall(event_id_list[0])[0]    # 事件簇id
+                    if cur_id in event_dict.keys():  # 事件id重复了！
+                        cur_id = str(int(max(event_dict.keys())) + 1)   # 如果有相同的则创建一个最大键值+1
+                    event_dict[cur_id] = []
+                    event_id = cur_id
+                if len(description_pattern_list) > 0:
+                    desc = description_pattern_list[0][len(u'event description: '):]
                     event_dict[event_id].append(desc)
                 continue
             line = line.split("\t")
@@ -66,7 +74,7 @@ def formatTweet(input_path, output_path):
     output_file.close()
 
 
-def tweetPurify(input_path, output_path):
+def tweet_purify(input_path, output_path):
     outputfile = codecs.open(output_path, encoding="utf8", mode="w")
     with codecs.open(input_path, encoding="utf8", mode="r") as f:
         for line in f:
@@ -111,12 +119,47 @@ def tweetPurify(input_path, output_path):
                 outputfile.write(text1[0] + "\t" + text1[1]+"\t"+text + '\n')  # 将文本转换为小写形式
     outputfile.close()
 
-input_path1 = "data//20180424-20180503//event_realtime_result_20180424-20180503.txt"
-output_path1 = "data//20180424-20180503//event_realtime_result_20180424-20180503_output.txt"
-formatTweet(input_path=input_path1, output_path=output_path1)
 
-output_path2 = "data//20180424-20180503//event_data.txt"
-tweetPurify(input_path=output_path1, output_path=output_path2)
+def get_event(input_path, output_path, threshold):
+    """
+    获取数目大于阈值threshold的事件推文
+    :param input_path:
+    :param output_path:
+    :param threshold:
+    :return:
+    """
+    output_file = codecs.open(output_path, encoding="utf8", mode="w")
+    with codecs.open(input_path, encoding="utf8", mode="r") as f:
+        current_event = []
+        i = 0
+        for line in f:
+            res = NUM_PATTERN.findall(line)
+            if res:  # 找到新的事件
+                current_event = []
+                i = 0
+                current_event.append(line)
+            else:
+                if i >= threshold:
+                    if current_event:
+                        output_file.write("".join(current_event))
+                        current_event = []
+                    else:
+                        output_file.write(line)
+                else:
+                    current_event.append(line)
+                    i += 1
 
+    output_file.close()
 
+if __name__ == '__main__':
+
+    input_path1 = "data//20180424-20180503//event_realtime_result_20180424-20180503.txt"
+    output_path1 = "data//20180424-20180503//event_realtime_result_20180424-20180503_output.txt"
+    format_tweet(input_path=input_path1, output_path=output_path1)
+
+    output_path2 = "data//20180424-20180503//event_data.txt"
+    tweet_purify(input_path=output_path1, output_path=output_path2)
+
+    output_path3 = "data//20180424-20180503//event_data_20.txt"
+    get_event(output_path2, output_path3, 20)
 
