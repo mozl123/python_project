@@ -5,10 +5,10 @@
 import codecs
 import re
 from preprocess import *
-PATTERN = re.compile(r"Event cluster_id: \d+")
+EVENT_ID_PATTERN = re.compile(r"Event cluster_id: \d+")   # 匹配事件id
 PATTERN2 = re.compile(r"\d+ \w{3} \w{3} \d+")
-PATTERN3 = re.compile(r"event description: .+")
-PATTERN4 = re.compile(r"^\d+:.+")
+DESCRIPTION_PATTERN = re.compile(r"event description: .+")  # 匹配事件描述
+NUM_PATTERN = re.compile(r"^\d+:.+")   # 匹配数字+冒号
 # 分词器
 tokenizer = TweetTokenize()
 
@@ -30,11 +30,11 @@ def formatTweet(input_path, output_path):
     event_id = 0
     with codecs.open(input_path, encoding="utf-8", mode="r") as f:
         for line in f:
-            line = line.strip()
-            if len(line) == 0:
+            line = line.strip()  # 去除边缘的空格和换行符
+            if len(line) == 0:  # 无效推文
                 continue
-            res = PATTERN.findall(line)
-            res1 = PATTERN3.findall(line)
+            res = EVENT_ID_PATTERN.findall(line)
+            res1 = DESCRIPTION_PATTERN.findall(line)
 
             if len(res) > 0 or len(res1):
                 if len(res) > 0:
@@ -70,7 +70,7 @@ def tweetPurify(input_path, output_path):
     outputfile = codecs.open(output_path, encoding="utf8", mode="w")
     with codecs.open(input_path, encoding="utf8", mode="r") as f:
         for line in f:
-            res = PATTERN4.findall(line)
+            res = NUM_PATTERN.findall(line)
             if res:  # 找到了数字开头的行
                 # outputfile.write(line)
                 text1 = line.strip().split("\t")
